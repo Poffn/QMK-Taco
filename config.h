@@ -3,7 +3,10 @@
 
 #pragma once
 
+// #define MASTER_RIGHT
+// #define SPLIT_USB_DETECT
 
+////////////////////////////////////// POINTING DEVICE //////////////////////////////////////
 #define SPI_SCK_PIN GP18
 #define SPI_MOSI_PIN GP19
 #define SPI_MISO_PIN GP16
@@ -15,20 +18,29 @@
 // Use -32767 to 32767, instead of just -127 to 127.
 // #define POINTING_DEVICE_TASK_THROTTLE_MS 10
 
+
 /* RP2040 Reset. */
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET
 
-// #define OLED_DISPLAY_128X32  // Use this if your display is 128x32
-// // #define OLED_DISPLAY_128X64  // Uncomment if your display is 128x64
+////////////////////////////////////// DOUBLE KEYBOARD //////////////////////////////////////
 
-#define I2C1_SDA_PIN GP14  // Change if using a different I²C bus
-#define I2C1_SCL_PIN GP15
+// #define SERIAL_USART_FULL_DUPLEX   // Enable full duplex operation mode.
+// #define SERIAL_USART_TX_PIN GP0    // USART TX pin
+// #define SERIAL_USART_RX_PIN GP1    // USART RX pin
 
 /*
  * Feature disable options
  *  These options are also useful to firmware size reduction.
  */
 
+ //////////////////////////////////// DISPLAY ///////////////////////////////////////////////
+ #define OLED_DISPLAY_128X32
+ #define I2C_DRIVER I2CD1
+ #define I2C1_SCL_PIN GP14
+ #define I2C1_SDA_PIN GP15
+
+
+ 
 /* disable debug print */
 // #define NO_DEBUG
 
