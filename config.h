@@ -3,8 +3,11 @@
 
 #pragma once
 
-// #define MASTER_RIGHT
-// #define SPLIT_USB_DETECT
+#define MASTER_RIGHT
+#define SPLIT_USB_DETECT
+#define MATRIX_ROWS 2
+// #define ROWS_PER_HAND 1
+
 
 ////////////////////////////////////// POINTING DEVICE //////////////////////////////////////
 #define SPI_SCK_PIN GP18
@@ -18,15 +21,11 @@
 // Use -32767 to 32767, instead of just -127 to 127.
 // #define POINTING_DEVICE_TASK_THROTTLE_MS 10
 
-
-/* RP2040 Reset. */
-#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET
-
 ////////////////////////////////////// DOUBLE KEYBOARD //////////////////////////////////////
 
-// #define SERIAL_USART_FULL_DUPLEX   // Enable full duplex operation mode.
-// #define SERIAL_USART_TX_PIN GP0    // USART TX pin
-// #define SERIAL_USART_RX_PIN GP1    // USART RX pin
+#define SERIAL_USART_FULL_DUPLEX   // Enable full duplex operation mode.
+#define SERIAL_USART_TX_PIN GP0    // USART TX pin
+#define SERIAL_USART_RX_PIN GP1    // USART RX pin
 
 /*
  * Feature disable options
@@ -40,7 +39,7 @@
  #define I2C1_SDA_PIN GP15
 
 
- 
+
 /* disable debug print */
 // #define NO_DEBUG
 
@@ -51,3 +50,6 @@
 // #define NO_ACTION_LAYER
 // #define NO_ACTION_TAPPING
 // #define NO_ACTION_ONESHOT
+
+#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET // Activates the double-tap behavior
+#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 200U // Timeout window in ms in which the double tap can occur.
