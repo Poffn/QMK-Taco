@@ -5,8 +5,9 @@
 
 #define MASTER_RIGHT
 #define SPLIT_USB_DETECT
-#define MATRIX_ROWS 2
-// #define ROWS_PER_HAND 1
+#define MATRIX_ROWS 8
+#define MATRIX_COLS 6
+//#define ROWS_PER_HAND 4 
 
 
 ////////////////////////////////////// POINTING DEVICE //////////////////////////////////////
@@ -14,6 +15,9 @@
 #define SPI_MOSI_PIN GP19
 #define SPI_MISO_PIN GP16
 #define PMW33XX_CS_PIN GP17 // SPI CS pin.
+
+#define PMW33XX_LIFTOFF_DISTANCE 0xff // Maximum liftoff distance..
+#define ROTATIONAL_TRANSFORM_ANGLE -90 // Angle of the sensor in degrees. Defaults to 0.
 
 /* Optional. */
 #define PMW33XX_CPI 2000      // The CPI range is 100-12000, in increments of 100. Defaults to 1600 CPI.
@@ -38,7 +42,7 @@
  #define I2C1_SCL_PIN GP14
  #define I2C1_SDA_PIN GP15
 
-
+''''';;;;;;;;;;;;::::;;;:::::::;;;
 
 /* disable debug print */
 // #define NO_DEBUG
