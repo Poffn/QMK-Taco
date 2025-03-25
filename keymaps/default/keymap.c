@@ -3,7 +3,8 @@
 
 
 enum layer_names { _BASE, _LOWERED, _RAISED, _FLAYER };
-enum custom_keycodes {LOWER_DPI, RAISE_DPI };
+enum custom_keycodes {LOWER_DPI, RAISE_DPI, DRAG_SCROLL};
+bool set_scrolling = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -17,8 +18,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 raise_dpi();
             }
             break;
+        case DRAG_SCROLL:
+            if(record->event.pressed){
+                set_scrolling = !set_scrolling;
+            }
     }
     return true;
+}
+
+report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
+    if (set_scrolling) {
+        mouse_report.h = mouse_report.x;
+        mouse_report.v = mouse_report.y;
+        mouse_report.x = 0;
+        mouse_report.y = 0;
+    }
+    return mouse_report;
 }
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -39,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______, _______, _______, _______, KC_LBRC, KC_RBRC,                      KC_PAST,    KC_4,    KC_5,    KC_6, KC_PPLS, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            _______, _______, _______, _______, MS_BTN1, MS_BTN2,                      KC_PSLS,    KC_1,    KC_2,    KC_3, KC_PMNS, _______,
+            _______, _______, _______, DRAG_SCROLL, MS_BTN1, MS_BTN2,                      KC_PSLS,    KC_1,    KC_2,    KC_3, KC_PMNS, _______,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                       _______, _______,  _______,                      _______,    KC_0, _______
                                             //`--------------------------'  `--------------------------'
