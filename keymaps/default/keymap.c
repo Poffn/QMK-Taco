@@ -3,6 +3,23 @@
 
 
 enum layer_names { _BASE, _LOWERED, _RAISED, _FLAYER };
+enum custom_keycodes {LOWER_DPI, RAISE_DPI };
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LOWER_DPI:
+            if (record->event.pressed) {
+                lower_dpi();
+            }
+            break;
+        case RAISE_DPI:
+            if (record->event.pressed) {
+                raise_dpi();
+            }
+            break;
+    }
+    return true;
+}
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT(
@@ -44,12 +61,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______,   KC_F5,   KC_F6,   KC_F7,   KC_F8, _______,                      KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN, _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            _______,   KC_F9,  KC_F10,  KC_F11,  KC_F12, _______,                      _______, _______, _______, _______, _______, _______,
+            _______,   KC_F9,  KC_F10,  KC_F11,  KC_F12, _______,                      _______, _______, _______, _______, LOWER_DPI, RAISE_DPI,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                         _______, _______, _______,                      _______, _______, _______
                                             //`--------------------------'  `--------------------------'
         )
 };
+
+void raise_dpi(void) {
+     int currentDpi = pointing_device_get_cpi();
+    if(currentDpi < 2000){
+        pointing_device_set_cpi(currentDpi + 100);
+    }
+}
+void lower_dpi(void) {
+    int currentDpi = pointing_device_get_cpi();
+    if(currentDpi > 100){
+        pointing_device_set_cpi(currentDpi - 100);
+    }
+}
 
 #ifdef OLED_ENABLE
 #include <quantum/split_common/split_util.h>
