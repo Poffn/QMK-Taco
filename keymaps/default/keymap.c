@@ -3,24 +3,57 @@
 
 
 enum layer_names { _BASE, _LOWERED, _RAISED, _FLAYER };
-enum custom_keycodes {LOWER_DPI, RAISE_DPI, DRAG_SCROLL};
+enum custom_keycodes {LOWER_DPI = SAFE_RANGE, RAISE_DPI, RESET_DPI, DRAG_SCROLL};
 bool set_scrolling = false;
+int dpi = 1000;
+
+int clamp(int value, int min, int max) {
+    if (value < min) {
+        return min;
+    } else if (value > max) {
+        return max;
+    }
+    return value;
+}
+
+void set_dpi(int value){
+    int newDpi = clamp(value, 100, 2000);
+    pointing_device_set_cpi(newDpi);
+    dpi = newDpi;
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LOWER_DPI:
             if (record->event.pressed) {
-                lower_dpi();
+                int currentDpi = pointing_device_get_cpi();
+                set_dpi(currentDpi-100);
+                return false;
             }
             break;
         case RAISE_DPI:
             if (record->event.pressed) {
-                raise_dpi();
+                int currentDpi = pointing_device_get_cpi();
+                set_dpi(currentDpi+100);
+                return false;
             }
             break;
+        case RESET_DPI:
+            if (record->event.pressed) {
+                set_dpi(1000);
+                return false;
+            }
+            break;
+
         case DRAG_SCROLL:
             if(record->event.pressed){
                 set_scrolling = !set_scrolling;
+                if(set_scrolling){
+                    pointing_device_set_cpi(dpi/2);
+                } else {
+                    pointing_device_set_cpi(dpi);
+                }
+                return false;
             }
     }
     return true;
@@ -56,7 +89,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______, _______, _______, DRAG_SCROLL, MS_BTN1, MS_BTN2,                      KC_PSLS,    KC_1,    KC_2,    KC_3, KC_PMNS, _______,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                      _______, _______,  _______,                      _______,    KC_0, _______
+                                      _______, _______,  KC_DEL,                      _______,    KC_0, _______
                                             //`--------------------------'  `--------------------------'
         ),
     [_RAISED] = LAYOUT(
@@ -76,25 +109,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______,   KC_F5,   KC_F6,   KC_F7,   KC_F8, _______,                      KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN, _______, _______,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            _______,   KC_F9,  KC_F10,  KC_F11,  KC_F12, _______,                      _______, _______, _______, _______, LOWER_DPI, RAISE_DPI,
+            _______,   KC_F9,  KC_F10,  KC_F11,  KC_F12, _______,                      _______, _______, _______, LOWER_DPI, RAISE_DPI, RESET_DPI,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                         _______, _______, _______,                      _______, _______, _______
                                             //`--------------------------'  `--------------------------'
         )
 };
 
-void raise_dpi(void) {
-     int currentDpi = pointing_device_get_cpi();
-    if(currentDpi < 2000){
-        pointing_device_set_cpi(currentDpi + 100);
-    }
-}
-void lower_dpi(void) {
-    int currentDpi = pointing_device_get_cpi();
-    if(currentDpi > 100){
-        pointing_device_set_cpi(currentDpi - 100);
-    }
-}
+
 
 #ifdef OLED_ENABLE
 #include <quantum/split_common/split_util.h>

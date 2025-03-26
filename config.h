@@ -18,7 +18,7 @@
 
 #define PMW33XX_LIFTOFF_DISTANCE 0xff // Maximum liftoff distance..
 #define ROTATIONAL_TRANSFORM_ANGLE -90 // Angle of the sensor in degrees. Defaults to 0.
-#define POINTING_DEVICE_INVERT_Y // Inverts the Y axis. Defaults to normal.
+// #define POINTING_DEVICE_INVERT_Y // Inverts the Y axis. Defaults to normal.
 
 /* Optional. */
 #define PMW33XX_CPI 2000      // The CPI range is 100-12000, in increments of 100. Defaults to 1600 CPI.
