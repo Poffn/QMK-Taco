@@ -49,7 +49,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if(record->event.pressed){
                 set_scrolling = !set_scrolling;
                 if(set_scrolling){
-                    pointing_device_set_cpi(dpi/2);
+                    pointing_device_set_cpi(dpi/4);
                 } else {
                     pointing_device_set_cpi(dpi);
                 }
@@ -115,8 +115,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                             //`--------------------------'  `--------------------------'
         )
 };
-
-
 
 #ifdef OLED_ENABLE
 #include <quantum/split_common/split_util.h>
